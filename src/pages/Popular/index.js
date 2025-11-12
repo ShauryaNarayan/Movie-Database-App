@@ -5,24 +5,58 @@ import './index.css'
 
 const API_KEY = '2c79426a2b832caaad04c209b1b8f3d2'
 
+const apiStatusConstants = {
+  INITIAL: 'INITIAL',
+  LOADING: 'LOADING',
+  SUCCESS: 'SUCCESS',
+  FAILURE: 'FAILURE',
+}
+
 const Popular = () => {
   const [movies, setMovies] = useState([])
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
+  const [apiStatus, setApiStatus] = useState(apiStatusConstants.INITIAL)
 
   useEffect(() => {
-    fetch(
-      `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`,
-    )
-      .then(res => res.json())
-      .then(data => {
-        setMovies(data.results || [])
-        setTotalPages(data.total_pages)
-      })
+    const fetchMovies = async () => {
+      setApiStatus(apiStatusConstants.LOADING)
+      try {
+        const res = await fetch(
+          `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`,
+        )
+        const data = await res.json()
+        if (data.results) {
+          setMovies(data.results)
+          setTotalPages(data.total_pages)
+          setApiStatus(apiStatusConstants.SUCCESS)
+        } else {
+          setApiStatus(apiStatusConstants.FAILURE)
+        }
+      } catch (error) {
+        console.error('Failed to fetch popular movies:', error)
+        setApiStatus(apiStatusConstants.FAILURE)
+      }
+    }
+
+    fetchMovies()
   }, [page])
 
-  return (
-    <div className="page">
+  const renderLoadingView = () => (
+    <div className="loading">
+      <p>Loading Popular Movies...</p>
+    </div>
+  )
+
+  const renderFailureView = () => (
+    <div className="error">
+      <h3>Failed to load movies!</h3>
+      <p>Please try again later.</p>
+    </div>
+  )
+
+  const renderSuccessView = () => (
+    <>
       <h2>Popular Movies</h2>
       <MoviesList movies={movies} />
       <Pagination
@@ -30,8 +64,23 @@ const Popular = () => {
         totalPages={totalPages}
         onPageChange={setPage}
       />
-    </div>
+    </>
   )
+
+  const renderPageContent = () => {
+    switch (apiStatus) {
+      case apiStatusConstants.LOADING:
+        return renderLoadingView()
+      case apiStatusConstants.SUCCESS:
+        return renderSuccessView()
+      case apiStatusConstants.FAILURE:
+        return renderFailureView()
+      default:
+        return null
+    }
+  }
+
+  return <div className="page">{renderPageContent()}</div>
 }
 
 export default Popular

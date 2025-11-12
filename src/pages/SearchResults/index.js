@@ -6,33 +6,62 @@ import './index.css'
 
 const API_KEY = '2c79426a2b832caaad04c209b1b8f3d2'
 
+const apiStatusConstants = {
+  INITIAL: 'INITIAL',
+  LOADING: 'LOADING',
+  SUCCESS: 'SUCCESS',
+  FAILURE: 'FAILURE',
+}
+
 const useQuery = () => new URLSearchParams(useLocation().search)
 
 const SearchResults = () => {
   const query = useQuery()
+  const searchTerm = query.get('query') || ''
   const [movies, setMovies] = useState([])
   const [page, setPage] = useState(Number(query.get('page')) || 1)
   const [totalPages, setTotalPages] = useState(1)
-  const searchTerm = query.get('query') || ''
+  const [apiStatus, setApiStatus] = useState(apiStatusConstants.INITIAL)
 
   useEffect(() => {
-    if (searchTerm) {
-      fetch(
-        `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&query=${searchTerm}&page=${page}`,
-      )
-        .then(res => res.json())
-        .then(data => {
-          setMovies(data.results || [])
+    if (!searchTerm) return
+    const fetchMovies = async () => {
+      setApiStatus(apiStatusConstants.LOADING)
+      try {
+        const res = await fetch(
+          `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&query=${searchTerm}&page=${page}`,
+        )
+        const data = await res.json()
+        if (data.results) {
+          setMovies(data.results)
           setTotalPages(data.total_pages)
-        })
+          setApiStatus(apiStatusConstants.SUCCESS)
+        } else {
+          setApiStatus(apiStatusConstants.FAILURE)
+        }
+      } catch (error) {
+        console.error('Failed to fetch searched movies:', error)
+        setApiStatus(apiStatusConstants.FAILURE)
+      }
     }
+    fetchMovies()
   }, [searchTerm, page])
 
-  if (!searchTerm)
-    return <div className="no-search">Enter a search term above.</div>
+  const renderLoadingView = () => (
+    <div className="loading">
+      <p>Searching movies...</p>
+    </div>
+  )
 
-  return (
-    <div className="page">
+  const renderFailureView = () => (
+    <div className="error">
+      <h3>Search Failed!</h3>
+      <p>Please try again later.</p>
+    </div>
+  )
+
+  const renderSuccessView = () => (
+    <>
       <h2>Search Results for "{searchTerm}"</h2>
       {movies.length > 0 ? (
         <>
@@ -46,8 +75,23 @@ const SearchResults = () => {
       ) : (
         <div className="no-results">No movies found.</div>
       )}
-    </div>
+    </>
   )
+
+  const renderPageContent = () => {
+    switch (apiStatus) {
+      case apiStatusConstants.LOADING:
+        return renderLoadingView()
+      case apiStatusConstants.SUCCESS:
+        return renderSuccessView()
+      case apiStatusConstants.FAILURE:
+        return renderFailureView()
+      default:
+        return null
+    }
+  }
+
+  return <div className="page">{renderPageContent()}</div>
 }
 
 export default SearchResults
