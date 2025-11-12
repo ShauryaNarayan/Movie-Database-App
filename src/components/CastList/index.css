@@ -1,0 +1,11 @@
+.cast-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+.no-cast {
+  text-align: center;
+  color: #aaa;
+  margin-top: 20px;
+}

@@ -1,0 +1,39 @@
+.navbar {
+  background: #111;
+  color: #fff;
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffcc00;
+  text-decoration: none;
+}
+.nav-links a {
+  color: #fff;
+  margin: 0 10px;
+  text-decoration: none;
+}
+.nav-links a:hover {
+  color: #ffcc00;
+}
+.search-form input {
+  padding: 6px;
+  border-radius: 4px;
+  border: none;
+}
+.search-form button {
+  margin-left: 5px;
+  padding: 6px 10px;
+  background: #ffcc00;
+  border: none;
+  cursor: pointer;
+}

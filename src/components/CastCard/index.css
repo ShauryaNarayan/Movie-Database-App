@@ -1,0 +1,20 @@
+.cast-card {
+  background-color: #1c1c1c;
+  border-radius: 10px;
+  overflow: hidden;
+  text-align: center;
+  color: white;
+  padding: 10px;
+  transition: transform 0.2s ease;
+}
+.cast-card:hover {
+  transform: scale(1.05);
+}
+.cast-image {
+  width: 100%;
+  border-radius: 10px;
+}
+.character {
+  color: #ffcc00;
+  font-size: 0.9rem;
+}
