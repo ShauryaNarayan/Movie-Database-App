@@ -19,10 +19,12 @@ const Navbar = () => {
     <header className="navbar">
       <div className="nav-inner">
         <Link to="/" className="brand">
-          movieDB
+          <h1>movieDB</h1>
         </Link>
         <nav className="nav-links">
-          <Link to="/">Popular</Link>
+          <Link to="/">
+            <h1>Popular</h1>
+          </Link>
           <Link to="/top-rated">Top Rated</Link>
           <Link to="/upcoming">Upcoming</Link>
         </nav>

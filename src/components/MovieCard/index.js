@@ -10,7 +10,7 @@ const MovieCard = ({movie}) => (
     <h3>{movie.title}</h3>
     <p>⭐ {movie.vote_average}</p>
     <Link to={`/movie/${movie.id}`} className="details-btn">
-      View Details
+      <button type="button">View Details </button>
     </Link>
   </div>
 )

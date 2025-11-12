@@ -57,7 +57,6 @@ const Popular = () => {
 
   const renderSuccessView = () => (
     <>
-      <h2>Popular Movies</h2>
       <MoviesList movies={movies} />
       <Pagination
         currentPage={page}
