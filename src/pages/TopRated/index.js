@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import MoviesList from '../../components/MoviesList'
 import Pagination from '../../components/Pagination'
+import Navbar from '../../components/Navbar'
 import './index.css'
 
 const API_KEY = '2c79426a2b832caaad04c209b1b8f3d2'
@@ -59,11 +60,6 @@ const TopRated = () => {
     <>
       <h2>Top Rated Movies</h2>
       <MoviesList movies={movies} />
-      <Pagination
-        currentPage={page}
-        totalPages={totalPages}
-        onPageChange={setPage}
-      />
     </>
   )
 
@@ -80,7 +76,17 @@ const TopRated = () => {
     }
   }
 
-  return <div className="page">{renderPageContent()}</div>
+  return (
+    <div className="page">
+    <Navbar/>
+      {renderPageContent()}{' '}
+      <Pagination
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+      />
+    </div>
+  )
 }
 
 export default TopRated

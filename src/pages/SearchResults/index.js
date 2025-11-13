@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {useLocation} from 'react-router-dom'
 import MoviesList from '../../components/MoviesList'
 import Pagination from '../../components/Pagination'
+import Navbar from '../../components/Navbar'
 import './index.css'
 
 const API_KEY = '2c79426a2b832caaad04c209b1b8f3d2'
@@ -66,11 +67,6 @@ const SearchResults = () => {
       {movies.length > 0 ? (
         <>
           <MoviesList movies={movies} />
-          <Pagination
-            currentPage={page}
-            totalPages={totalPages}
-            onPageChange={setPage}
-          />
         </>
       ) : (
         <div className="no-results">No movies found.</div>
@@ -91,7 +87,17 @@ const SearchResults = () => {
     }
   }
 
-  return <div className="page">{renderPageContent()}</div>
+  return (
+    <div className="page">
+      <Navbar />
+      {renderPageContent()}{' '}
+      <Pagination
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+      />
+    </div>
+  )
 }
 
 export default SearchResults

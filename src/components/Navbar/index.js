@@ -22,9 +22,7 @@ const Navbar = () => {
           <h1>movieDB</h1>
         </Link>
         <nav className="nav-links">
-          <Link to="/">
-            <h1>Popular</h1>
-          </Link>
+          <Link to="/">Home</Link>
           <Link to="/top-rated">Top Rated</Link>
           <Link to="/upcoming">Upcoming</Link>
         </nav>

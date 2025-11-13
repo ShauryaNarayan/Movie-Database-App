@@ -9,7 +9,6 @@ import MovieDetails from './components/MovieDetails'
 
 const App = () => (
   <div className="app">
-    <Navbar />
     <Switch>
       <Route exact path="/" component={Popular} />
       <Route path="/top-rated" component={TopRated} />
