@@ -78,7 +78,7 @@ const TopRated = () => {
 
   return (
     <div className="page">
-    <Navbar/>
+      <Navbar />
       {renderPageContent()}{' '}
       <Pagination
         currentPage={page}
